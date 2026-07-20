@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Serverless Dino Scores API
+  version: 1.0.0
+  description: Contrat de référence uniquement — le lab construit la REST API dans la console.
+servers:
+  - url: https://{apiId}.execute-api.us-east-1.amazonaws.com/prod
+    variables:
+      apiId:
+        default: example
+security:
+  - cognitoIdToken: []
+paths:
+  /leaderboard:
+    get:
+      summary: Retourner les dix meilleurs scores
+      responses:
+        '200':
+          description: Classement décroissant
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    maxItems: 10
+                    items:
+                      $ref: '#/components/schemas/LeaderboardEntry'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /me:
+    get:
+      summary: Retourner le record de l'utilisateur authentifié
+      responses:
+        '200':
+          description: Record personnel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonalScore'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /me/score:
+    put:
+      summary: Améliorer le record de l'utilisateur authentifié
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [score]
+              properties:
+                score:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000000
+      responses:
+        '200':
+          description: État du record après écriture conditionnelle
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [updated, bestScore]
+                properties:
+                  updated:
+                    type: boolean
+                  bestScore:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    cognitoIdToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LeaderboardEntry:
+      type: object
+      required: [rank, username, bestScore]
+      properties:
+        rank:
+          type: integer
+        username:
+          type: string
+        bestScore:
+          type: integer
+    PersonalScore:
+      type: object
+      required: [username, bestScore]
+      properties:
+        username:
+          type: string
+        bestScore:
+          type: integer
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  responses:
+    BadRequest:
+      description: Score invalide
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Jeton Cognito absent ou invalide
+

@@ -1,0 +1,4 @@
+# La dépendance est fournie dans le lab via le Lambda Layer officiel.
+# Cette version sert à reproduire localement le code et les tests.
+aws-lambda-powertools==3.28.0
+

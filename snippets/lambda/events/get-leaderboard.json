@@ -1,0 +1,31 @@
+{
+  "resource": "/{proxy+}",
+  "path": "/leaderboard",
+  "httpMethod": "GET",
+  "headers": {
+    "Origin": "http://__S3_WEBSITE_HOST__"
+  },
+  "multiValueHeaders": {},
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": {
+    "proxy": "leaderboard"
+  },
+  "stageVariables": null,
+  "requestContext": {
+    "requestId": "manual-test",
+    "stage": "prod",
+    "identity": {
+      "sourceIp": "127.0.0.1"
+    },
+    "authorizer": {
+      "claims": {
+        "sub": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+        "cognito:username": "alice"
+      }
+    }
+  },
+  "body": null,
+  "isBase64Encoded": false
+}
+

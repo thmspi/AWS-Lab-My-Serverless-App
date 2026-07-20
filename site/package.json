@@ -1,0 +1,18 @@
+{
+  "name": "aws-sbg-serverless-dino",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "node --test",
+    "test:coverage": "node --experimental-test-coverage --test"
+  },
+  "dependencies": {
+    "aws-amplify": "^6.15.8"
+  },
+  "devDependencies": {
+    "vite": "^7.0.6"
+  }
+}
